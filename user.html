@@ -200,7 +200,7 @@
                 <dt>
                     <div class="orderagain">再来一单</div>
                     <div class="orderinfo">金额:
-                        <span class="moneysign">¥3</span>
+                        <span class="moneysign" id="money">¥3</span>
                         &nbsp;数量: 1
                     </div>
                 </dt>
@@ -376,19 +376,23 @@
         var sname = GetQueryString("name");
         var id = GetQueryString("id");
         var place = GetQueryString("place");
+        var money = GetQueryString("money");
         var time = GetQueryString("time");
         document.getElementById("username").textContent = sname;
         document.getElementById("bookplace").textContent = place;
+        document.getElementById("money").textContent = "¥" + money;
         function goHome(){
             window.location.href = './home.html?name=' + encodeURIComponent(sname)
                                             + '&id=' + encodeURIComponent(id)
                                             + '&place=' + encodeURIComponent(place)
+                                            + '&money=' + encodeURIComponent(money)
                                             + '&time=' + encodeURIComponent(time);
         };
         function goOrder() {
             window.location.href = './order.html?name=' + encodeURIComponent(sname)
                                             + '&id=' + encodeURIComponent(id)
                                             + '&place=' + encodeURIComponent(place)
+                                            + '&money=' + encodeURIComponent(money)
                                             + '&time=' + encodeURIComponent(time);
         };
     </script>

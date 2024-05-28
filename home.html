@@ -265,7 +265,7 @@
         <img src="./assets/univ-logo.jpg" alt="Logo" class="univ-logo">
         <div style="align-self: flex-center; padding-right: 36px;">
             <span style="color: #ffffff; padding-right: 12.5px;" id="welcometext">欢迎，???</span>
-            <span style="color: #ffffff;">退出</span>
+            <span style="color: #ffffff;" onclick="goIndex()">退出</span>
         </div>
     </div>
     <div class="carousel-container">
@@ -351,12 +351,21 @@
         var sname = GetQueryString("name");
         var id = GetQueryString("id");
         var place = GetQueryString("place");
+        var money = GetQueryString("money");
         var time = GetQueryString("time");
         document.getElementById("welcometext").textContent = "欢迎，" + sname;
         function goNext() {
             window.location.href = './user.html?name=' + encodeURIComponent(sname)
                                             + '&id=' + encodeURIComponent(id)
                                             + '&place=' + encodeURIComponent(place)
+                                            + '&money=' + encodeURIComponent(money)
+                                            + '&time=' + encodeURIComponent(time);
+        }
+        function goIndex() {
+            window.location.href = './index.html?name=' + encodeURIComponent(sname)
+                                            + '&id=' + encodeURIComponent(id)
+                                            + '&place=' + encodeURIComponent(place)
+                                            + '&money=' + encodeURIComponent(money)
                                             + '&time=' + encodeURIComponent(time);
         }
     </script>

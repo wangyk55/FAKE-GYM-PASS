@@ -6,10 +6,59 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
     <title>FAKE GYM PASS</title>
     <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            padding: 1em 0;
+            background-color: #f1f1f1;
+            font-size: 0.7em;
+            text-align: center;
+        }
+        
         .flex-container {
             display: flex;
             align-items: center;
             justify-content: center;
+        }
+
+        .floatWindowContainer {
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        .floatWindow {
+            position: fixed;
+            z-index: 1;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 500px;
+            background-color: #f1f1f1;
+            padding: 1em;
+            border-radius: 1em;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 2em;
+            font-weight: bold;
+            position: absolute;
+            right: .5em;
+            top: 0;
         }
     </style>
 </head>
@@ -36,6 +85,12 @@
                 <th>预约场馆</th>
                 <td>
                     <input id="place" style="width: 10rem;">
+                </td>
+            </tr>
+            <tr>
+                <th>预约金额</th>
+                <td>
+                    <input id="money" style="width: 10rem;">
                 </td>
             </tr>
             <tr>
@@ -98,16 +153,66 @@
                     };
                 </script>
             </tr>
+            <tr>
+                <th></th>
+                <td class="flex-container">
+                    <button onclick="enter()">Go!</button>
+                </td>
+            </tr>
         </table>
     </section>
-    <section class="flex-container">
-        <button onclick="enter()">Go!</button>
-    </section>
+    <footer>
+        <span>© 2024 MAJ</span>
+        <span>|</span>
+        <a href="https://github.com/wangyk55/FAKE-GYM-PASS">GitHub</a>
+        <span>|</span>
+        <a onclick="openFloatWindow()" href="#">隐私声明</a>
+        <div>本项目仅供学习交流，严禁用于造假及非法用途</div>
+    </footer>
+    <div class="floatWindowContainer" id="floatWindowContainer" hidden="hidden">
+        <div class="floatWindow">
+            <div class="floatWindow-content">
+                <span class="close" onclick="closeFloatWindow()">&times;</span>
+                <h4>隐私声明</h4>
+                <p>本网站不会收集任何用户信息</p>
+            </div>
+        </div>
+    </div>
     <script>
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return decodeURIComponent(r[2]); return null;
+        }
+        var sname = GetQueryString("name");
+        var id = GetQueryString("id");
+        var place = GetQueryString("place");
+        var money = GetQueryString("money");
+        var time = GetQueryString("time");
+        if (sname != null) {
+            document.getElementById("sname").value = sname;
+        }
+        if (id != null) {
+            document.getElementById("studentid").value = id;
+        }
+        if (place != null) {
+            document.getElementById("place").value = place;
+        }
+        if (money != null) {
+            document.getElementById("money").value = money;
+        }
+        if (time != null) {
+            var t = time.split("&nbsp;&nbsp;");
+            document.getElementById("date").value = t[0];
+            var t1 = t[1].split("-");
+            document.getElementById("time1").value = t1[0];
+            document.getElementById("time2").value = t1[1];
+        }
         function enter() {
             var sname = document.getElementById("sname").value;
             var id = document.getElementById("studentid").value;
             var place = document.getElementById("place").value;
+            var money = document.getElementById("money").value;
             var date = document.getElementById("date").value;
             var time1 = document.getElementById("time1").value;
             var time2 = document.getElementById("time2").value;
@@ -115,7 +220,16 @@
             window.location.href = './home.html?name=' + encodeURIComponent(sname)
                                             + '&id=' + encodeURIComponent(id)
                                             + '&place=' + encodeURIComponent(place)
+                                            + '&money=' + encodeURIComponent(money)
                                             + '&time=' + encodeURIComponent(time);
+        }
+
+        function openFloatWindow() {
+            document.getElementById("floatWindowContainer").hidden = false;
+        }
+
+        function closeFloatWindow() {
+            document.getElementById("floatWindowContainer").hidden = true;
         }
     </script>
 </body>

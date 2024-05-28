@@ -309,7 +309,7 @@
                 <div style="padding: 0; padding-top: .625rem; justify-content: flex-end;">
                     <span style="color: grey; padding-right: .75rem; font-size: .85rem; margin: 0;">订单金额</span>
                     <span style="color: #EB5A5A; font-size: .85rem;">
-                        <big>￥3.00</big>
+                        <big id="money">￥3.00</big>
                     </span>
                 </div>
             </div>
@@ -1283,6 +1283,7 @@
         var sname = GetQueryString("name");
         var id = GetQueryString("id");
         var place = GetQueryString("place");
+        var money = GetQueryString("money");
         var time = GetQueryString("time");
         document.getElementById("sname").textContent = sname;
         document.getElementById("id").textContent = id;
@@ -1293,18 +1294,21 @@
         var bts = document.getElementsByName("booktime");
         bts[0].innerHTML = time;
         bts[1].innerHTML = "预定日期:"+time;
+        document.getElementById("money").textContent = "￥" + money + ".00";
         
 
         function goHome(){
             window.location.href = './home.html?name=' + encodeURIComponent(sname)
                                             + '&id=' + encodeURIComponent(id)
                                             + '&place=' + encodeURIComponent(place)
+                                            + '&money=' + encodeURIComponent(money)
                                             + '&time=' + encodeURIComponent(time);
         };
         function goUser() {
             window.location.href = './user.html?name=' + encodeURIComponent(sname)
                                             + '&id=' + encodeURIComponent(id)
                                             + '&place=' + encodeURIComponent(place)
+                                            + '&money=' + encodeURIComponent(money)
                                             + '&time=' + encodeURIComponent(time);
         };
     </script>
