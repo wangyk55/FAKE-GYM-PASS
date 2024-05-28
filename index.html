@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <title>FAKE GYM PASS</title>
+    <style>
+        .flex-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="flex-container">
+        <h1>FAKE GYM PASS</h1>
+    </div>
+    <section class="flex-container">
+        <table style="text-align: left;">
+            <tr>
+                <th>姓名</th>
+                <td>
+                    <input id="sname" style="width: 10rem;">
+                </td>
+            </tr>
+            <tr>
+                <th>学号</th>
+                <td>
+                    <input id="studentid" style="width: 10rem;">
+                </td>
+            </tr>
+            <tr>
+                <th>预约场馆</th>
+                <td>
+                    <input id="place" style="width: 10rem;">
+                </td>
+            </tr>
+            <tr>
+                <th>预约时段</th>
+                <td>
+                    <input type="date" id="date" style="width: 10rem;">
+                </td>
+            </tr>
+            <tr>
+                <th></th>
+                <td id="book-time-input" class="flex-container" style="justify-content: space-between;">
+                    <input type="time" id="time1" list="timedl1" onchange="changeTime2()">
+                    -
+                    <input type="time" id="time2" list="timedl2">
+                </td>
+                <script>
+                    var dl1 = document.createElement("datalist");
+                    var mnt1 = ["01", "31"];
+                    p = document.getElementById("book-time-input");
+                    dl1.id = "timedl1";
+                    for (var t1=0;t1<25;t1++) {
+                        var opt1 = document.createElement("option");
+                        var opt2 = document.createElement("option");
+                        opt1.textContent = String(t1).padStart(2, '0')+":"+mnt1[0];
+                        opt2.textContent = String(t1).padStart(2, '0')+":"+mnt1[1];
+                        dl1.appendChild(opt1);
+                        dl1.appendChild(opt2);
+                    }
+                    p.appendChild(dl1);
+                    function changeTime2(){
+                        var time2 = document.getElementById("time2");
+                        time2.value = "";
+                        var start = document.getElementById("time1").value;
+                        var t2 = parseInt(start.split(":")[0]);
+                        var olddl2 = document.getElementById("timedl2");
+                        if (olddl2) {
+                            olddl2.remove();
+                        }
+                        var dl2 = document.createElement("datalist");
+                        dl2.id = "timedl2";
+                        var mnt2 = ["00", "30"];
+                        if (start.split(":")[1] == "31") {
+                            var opt = document.createElement("option");
+                            opt.textContent = String(t2+1).padStart(2, '0')+":"+mnt2[0];
+                        } else {
+                            var opt = document.createElement("option");
+                            opt.textContent = String(t2).padStart(2, '0')+":"+mnt2[1];
+                            t2++;
+                        }
+                        dl2.appendChild(opt);
+                        for (t2;t2<25;t2++) {
+                            var opt1 = document.createElement("option");
+                            var opt2 = document.createElement("option");
+                            opt1.textContent = String(t2).padStart(2, '0')+":"+mnt2[0];
+                            opt2.textContent = String(t2).padStart(2, '0')+":"+mnt2[1];
+                            dl2.appendChild(opt1);
+                            dl2.appendChild(opt2);
+                            p.appendChild(dl2);
+                        }
+                    };
+                </script>
+            </tr>
+        </table>
+    </section>
+    <section class="flex-container">
+        <button onclick="enter()">Go!</button>
+    </section>
+    <script>
+        function enter() {
+            var sname = document.getElementById("sname").value;
+            var id = document.getElementById("studentid").value;
+            var place = document.getElementById("place").value;
+            var date = document.getElementById("date").value;
+            var time1 = document.getElementById("time1").value;
+            var time2 = document.getElementById("time2").value;
+            var time = date+"&nbsp;&nbsp;"+time1+"-"+time2+" &nbsp;&nbsp;";
+            window.location.href = './home.html?name=' + encodeURIComponent(sname)
+                                            + '&id=' + encodeURIComponent(id)
+                                            + '&place=' + encodeURIComponent(place)
+                                            + '&time=' + encodeURIComponent(time);
+        }
+    </script>
+</body>
+
+</html>

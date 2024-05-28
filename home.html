@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <title>体育场馆管理与预订系统</title>
+    <link rel="stylesheet" href="./simplelineicons/css/simple-line-icons.css">
+    <style>
+        textarea {
+            font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif
+        }
+
+        body,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        textarea {
+            font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif
+        }
+
+        @keyframes carousel-img {
+            0% {
+                transform: translateX(0%);
+            }
+
+            23.5714% {
+                transform: translateX(0%);
+            }
+
+            26.4285% {
+                transform: translateX(-33.3333%);
+            }
+
+            73.5715% {
+                transform: translateX(-33.3333%);
+            }
+
+            76.4286% {
+                transform: translateX(-66.6666%);
+            }
+
+            100% {
+                transform: translateX(-66.6666%);
+            }
+        }
+
+        @keyframes carousel-dot1 {
+            0% {
+                background-color: #f09545;
+            }
+
+            23.5714% {
+                background-color: #f09545;
+            }
+
+            26.4285% {
+                background-color: #ffffff;
+            }
+
+            73.5715% {
+                background-color: #ffffff;
+            }
+
+            76.4286% {
+                background-color: #f09545;
+            }
+
+            100% {
+                background-color: #f09545;
+            }
+        }
+
+        @keyframes carousel-dot2 {
+            0% {
+                background-color: #ffffff;
+            }
+
+            23.5714% {
+                background-color: #ffffff;
+            }
+
+            26.4285% {
+                background-color: #f09545;
+            }
+
+            73.5715% {
+                background-color: #f09545;
+            }
+
+            76.4286% {
+                background-color: #ffffff;
+            }
+
+            100% {
+                background-color: #ffffff;
+            }
+        }
+
+        .navigatebar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #005828;
+        }
+
+        .carousel-container {
+            width: 100%;
+            height: 144px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .carousel-images {
+            display: flex;
+            width: 300%;
+            height: 100%;
+            animation-name: carousel-img;
+            animation-duration: 7s;
+            animation-iteration-count: infinite;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        .carousel-images img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .carousel-images:hover {
+            animation-play-state: paused;
+        }
+
+        .carousel-progress {
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+            position: absolute;
+            bottom: 12px;
+            right: 0px;
+        }
+
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin: 0 2px;
+            z-index: 1;
+        }
+
+        .carousel-dot.pre {
+            animation-name: carousel-dot1;
+            animation-duration: 7s;
+            animation-iteration-count: infinite;
+            margin-right: 1.8px;
+        }
+
+        .carousel-dot.nxt {
+            animation-name: carousel-dot2;
+            animation-duration: 7s;
+            animation-iteration-count: infinite;
+        }
+
+        .campus-img {
+            width: 80px;
+            height: 80px;
+            border-width: 1px;
+            border-style: solid;
+            border-radius: 5%;
+            border-color: #eeeeee;
+            margin-top: 19px;
+            margin-bottom: 11px;
+            margin-right: 10px;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        .campus-book-block {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .campus-name {
+            color: #333333;
+            /* margin: 0px;
+            margin-bottom: 18px; */
+            margin-top: 13px;
+            font-weight: 400;
+        }
+
+        .campus-loc-pin {
+            font-size: 14px;
+            color: #999999;
+            opacity: .5;
+            /* margin-bottom: 18px; */
+        }
+
+        .campus-book {
+            height: 22px;
+            width: 47.5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 4px;
+            margin-bottom: 11px;
+            /* font-size: 10.5px; */
+            font-size: .65625rem;
+            color: #ffffff;
+            background-color: #005826;
+        }
+
+        .univ-logo {
+            align-self: flex-center;
+            width: 135px;
+            padding: 10px;
+            padding-left: 20px;
+        }
+
+        .campus-title {
+            height: 45px;
+            margin-left: 0px;
+            border-bottom: 1px solid #ebebeb;
+            align-items: center;
+        }
+
+        .greenbarbefore {
+            width: 3px;
+            height: 15px;
+            background-color: #005828;
+            margin-left: 9px;
+            margin-right: 6.6px;
+        }
+
+        table {
+            width: 100%;
+            margin-top: 4px;
+            border-collapse: collapse;
+            background: #ffffff;
+        }
+
+        td {
+            margin-left: 9px;
+            border-bottom: 1px solid #f2f2f2;
+            display: flex;
+            justify-content: flex-start;
+        }
+
+        a {
+            color: #3b863b;
+            margin-right: 13px;
+            margin-left: auto;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body style="margin: 0; background-color: #f6f6f6;">
+    <div class="navigatebar">
+        <img src="univ-logo.jpg" alt="Logo" class="univ-logo">
+        <div style="align-self: flex-center; padding-right: 36px;">
+            <span style="color: #ffffff; padding-right: 12.5px;" id="welcometext">欢迎，???</span>
+            <span style="color: #ffffff;">退出</span>
+        </div>
+    </div>
+    <div class="carousel-container">
+        <div class="carousel-images">
+            <img src="image1.png" alt="Carousel 1" draggable="false">
+            <img src="image2.png" alt="Carousel 2" draggable="false">
+            <img src="image1.png" alt="Carousel 3" draggable="false">
+        </div>
+        <div class="carousel-progress">
+            <div class="carousel-dot pre"></div>
+            <div class="carousel-dot nxt"></div>
+        </div>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <td align="left" class="campus-title">
+                    <div class="greenbarbefore"></div>
+                    <div>场馆预订</div>
+                    <a onclick="goNext()">我的订单</a>
+                </td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>
+                    <img class="campus-img" src="south.png" alt="South Campus">
+                    <div class="campus-book-block">
+                        <div class="campus-name">南校区</div>
+                        <div class="icon-location-pin campus-loc-pin"></div>
+                        <div class="campus-book">在线预订</div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <img class="campus-img" src="north.gif" alt="North Campus">
+                    <div class="campus-book-block">
+                        <div class="campus-name">北校区</div>
+                        <div class="icon-location-pin campus-loc-pin"></div>
+                        <div class="campus-book">在线预订</div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <img class="campus-img" src="east.png" alt="East Campus">
+                    <div class="campus-book-block">
+                        <div class="campus-name">东校区</div>
+                        <div class="icon-location-pin campus-loc-pin"></div>
+                        <div class="campus-book">在线预订</div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <img class="campus-img" src="zhuhai.png" alt="Zhuhai Campus">
+                    <div class="campus-book-block">
+                        <div class="campus-name">珠海校区</div>
+                        <div class="icon-location-pin campus-loc-pin"></div>
+                        <div class="campus-book">在线预订</div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <img class="campus-img" src="Shenzhen.png" alt="Shenzhen Campus">
+                    <div class="campus-book-block">
+                        <div class="campus-name">深圳校区</div>
+                        <div class="icon-location-pin campus-loc-pin"></div>
+                        <div class="campus-book">在线预订</div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <script>
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return decodeURIComponent(r[2]); return null;
+        }
+        var sname = GetQueryString("name");
+        var id = GetQueryString("id");
+        var place = GetQueryString("place");
+        var time = GetQueryString("time");
+        document.getElementById("welcometext").textContent = "欢迎，" + sname;
+        function goNext() {
+            window.location.href = './user.html?name=' + encodeURIComponent(sname)
+                                            + '&id=' + encodeURIComponent(id)
+                                            + '&place=' + encodeURIComponent(place)
+                                            + '&time=' + encodeURIComponent(time);
+        }
+    </script>
+</body>
+
+</html>

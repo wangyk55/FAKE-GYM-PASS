@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <title>用户中心</title>
+    <link rel="stylesheet" href="./simplelineicons/css/simple-line-icons.css">
+    <style>
+        textarea {
+            font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif
+        }
+
+        body,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        textarea {
+            font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif
+        }
+
+        section {
+            display: flex;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        dl {
+            background-color: #fff;
+            margin: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        dt {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.625rem 1rem 0.5rem 1rem;
+            /*上右下左*/
+        }
+
+        dd {
+            margin-inline-start: 0;
+            padding-left: 1.5rem;
+        }
+
+        .scrollbar {
+            height: calc(96vh - 273px);
+            overflow-y: auto;
+        }
+
+        .scrollbar::-webkit-scrollbar {
+            width: 6px;
+            border-radius: 6px;
+            /*外层轨道*/
+        }
+
+        .scrollbar::-webkit-scrollbar-thumb {
+            display: block;
+            width: 6px;
+            margin: 0 auto;
+            border-radius: 10px;
+            background: #ccc;
+            /*内层轨道*/
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #005828;
+            color: #fff;
+            font-size: 1.125rem;
+            padding-top: 12px;
+            padding-bottom: 12px;
+            padding-left: 18px;
+            padding-right: 18px;
+        }
+
+        .toolbar>a {
+            color: #fff;
+        }
+
+        .information {
+            background-color: #005828;
+            margin-bottom: 1rem;
+        }
+
+        .orderhead {
+            background-color: #fff;
+            border-bottom: 1px solid #d9d9d9;
+            align-items: center;
+            padding: 0.625rem 0.75rem;
+            justify-content: space-between;
+        }
+
+        .avatar {
+            border: .125rem solid rgba(255, 255, 255, .5);
+            width: 4rem;
+            height: 4rem;
+            margin-top: 1rem;
+            margin-left: 1rem;
+            margin-bottom: 0.25rem;
+            border-radius: 50%;
+            object-fit: cover;
+            object-position: top;
+        }
+
+        .username {
+            color: rgba(255, 255, 255, .8);
+            margin-top: 1rem;
+            margin-left: 0.875rem;
+            font-size: 1.5rem;
+            font-weight: 400;
+        }
+
+        .orderlist {
+            flex-direction: column;
+            position: absolute;
+            width: 100%;
+            top: 273px;
+        }
+
+        .ordertitle {
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .success-text {
+            color: #999;
+            font-size: .85rem;
+            font-weight: 600;
+        }
+
+        .ordercontent {
+            color: #008830;
+            font-size: 0.9rem;
+            line-height: 1.75rem;
+        }
+
+        .orderagain {
+            color: #ff902b;
+            font-size: .85rem;
+            border-width: 1px;
+            border-style: solid;
+            border-radius: 5px;
+            padding: .3125rem .75rem;
+        }
+
+        .orderinfo {
+            font-size: .85rem;
+            padding-top: .35rem;
+            padding-bottom: .625rem;
+            overflow: hidden;
+            /* padding: 0 0 .8rem .8rem; */
+        }
+
+        .moneysign {
+            color: #eb5a5a;
+        }
+    </style>
+</head>
+
+<body style="margin: 0; background-color: #f6f6f6;">
+    <div class="toolbar">
+        <a class="icon-logout" onclick="goHome()"></a>
+        <div>用户中心</div>
+        <a class="icon-home" onclick="goHome()"></a>
+    </div>
+    <section class="information">
+        <img class="avatar" src="avatar.jpg" alt="avatar">
+        <h1 class="username" id="username">???</h1>
+    </section>
+    <section class="orderhead">
+        <div style="color: #333; font-size: 1rem; margin: 0;">我的订单</div>
+        <div style="font-size: 1rem; color: grey; margin: 0;">
+            <span>全部订单</span>
+            <span class="icon-arrow-right" style="font-size: 12px; font-weight: 400;"></>
+        </div>
+    </section>
+    <section class="orderlist">
+        <div class="scrollbar">
+            <dl>
+                <dt>
+                    <div class="ordertitle">订单 1714994323418414</div>
+                    <div class="success-text">预订成功</div>
+                </dt>
+                <dd>
+                    <a class="ordercontent" onclick="goOrder()">
+                        <div id="bookplace">???</div>
+                        <div>预订日期:2024-05-25</div>
+                        <div>下单日期:2020-05-25 12:00:23</div>
+                    </a>
+                </dd>
+                <dt>
+                    <div class="orderagain">再来一单</div>
+                    <div class="orderinfo">金额:
+                        <span class="moneysign">¥3</span>
+                        &nbsp;数量: 1
+                    </div>
+                </dt>
+            </dl>
+            <dl>
+                <dt>
+                    <div class="ordertitle">订单 1714749265849276</div>
+                    <div class="success-text">预订成功</div>
+                </dt>
+                <dd>
+                    <a class="ordercontent" onclick="goOrder()">
+                        <div>深圳校区室内排球场</div>
+                        <div>预订日期:2024-05-21</div>
+                        <div>下单日期:2024-05-21 15:17:32</div>
+                    </a>
+                </dd>
+                <dt>
+                    <div class="orderagain">再来一单</div>
+                    <div class="orderinfo">金额:
+                        <span class="moneysign">¥3</span>
+                        &nbsp;数量: 1
+                    </div>
+                </dt>
+            </dl>
+            <dl>
+                <dt>
+                    <div class="ordertitle">订单 1714850482618495</div>
+                    <div class="success-text">预订成功</div>
+                </dt>
+                <dd>
+                    <a class="ordercontent" onclick="goOrder()">
+                        <div>健身房测试</div>
+                        <div>预订日期:2024-05-20</div>
+                        <div>下单日期:2020-05-20 19:45:13</div>
+                    </a>
+                </dd>
+                <dt>
+                    <div class="orderagain">再来一单</div>
+                    <div class="orderinfo">金额:
+                        <span class="moneysign">¥5</span>
+                        &nbsp;数量: 1
+                    </div>
+                </dt>
+            </dl>
+            <dl>
+                <dt>
+                    <div class="ordertitle">订单 1714386940271586</div>
+                    <div class="success-text">预订成功</div>
+                </dt>
+                <dd>
+                    <a class="ordercontent" onclick="goOrder()">
+                        <div>深圳校区室内排球场</div>
+                        <div>预订日期:2024-05-12</div>
+                        <div>下单日期:2020-05-12 20:34:27</div>
+                    </a>
+                </dd>
+                <dt>
+                    <div class="orderagain">再来一单</div>
+                    <div class="orderinfo">金额:
+                        <span class="moneysign">¥3</span>
+                        &nbsp;数量: 1
+                    </div>
+                </dt>
+            </dl>
+            <dl>
+                <dt>
+                    <div class="ordertitle">订单 1714173849527503</div>
+                    <div class="success-text">预订成功</div>
+                </dt>
+                <dd>
+                    <a class="ordercontent" onclick="goOrder()">
+                        <div>健身房测试</div>
+                        <div>预订日期:2024-05-08</div>
+                        <div>下单日期:2024-05-08 14:56:53</div>
+                    </a>
+                </dd>
+                <dt>
+                    <div class="orderagain">再来一单</div>
+                    <div class="orderinfo">金额:
+                        <span class="moneysign">¥5</span>
+                        &nbsp;数量: 1
+                    </div>
+                </dt>
+            </dl>
+            <dl>
+                <dt>
+                    <div class="ordertitle">订单 1714950371285942</div>
+                    <div class="success-text">预订成功</div>
+                </dt>
+                <dd>
+                    <a class="ordercontent" onclick="goOrder()">
+                        <div>深圳校区室内排球场</div>
+                        <div>预订日期:2020-05-03</div>
+                        <div>下单日期:2020-05-03 19:36:15</div>
+                    </a>
+                </dd>
+                <dt>
+                    <div class="orderagain">再来一单</div>
+                    <div class="orderinfo">金额:
+                        <span class="moneysign">¥3</span>
+                        &nbsp;数量: 1
+                    </div>
+                </dt>
+            </dl>
+            <dl>
+                <dt>
+                    <div class="ordertitle">订单 1714583027859481</div>
+                    <div class="success-text">预订成功</div>
+                </dt>
+                <dd>
+                    <a class="ordercontent" onclick="goOrder()">
+                        <div>深圳校区室内排球场</div>
+                        <div>预订日期:2024-05-01</div>
+                        <div>下单日期:2024-05-01 12:43:15</div>
+                    </a>
+                </dd>
+                <dt>
+                    <div class="orderagain">再来一单</div>
+                    <div class="orderinfo">金额:
+                        <span class="moneysign">¥3</span>
+                        &nbsp;数量: 1
+                    </div>
+                </dt>
+            </dl>
+            <dl>
+                <dt>
+                    <div class="ordertitle">订单 1714847265892017</div>
+                    <div class="success-text">预订成功</div>
+                </dt>
+                <dd>
+                    <a class="ordercontent" onclick="goOrder()">
+                        <div>深圳校区室内排球场</div>
+                        <div>预订日期:2024-04-28</div>
+                        <div>下单日期:2024-04-28 17:04:46</div>
+                    </a>
+                </dd>
+                <dt>
+                    <div class="orderagain">再来一单</div>
+                    <div class="orderinfo">金额:
+                        <span class="moneysign">¥3</span>
+                        &nbsp;数量: 1
+                    </div>
+                </dt>
+            </dl>
+            <dl>
+                <dt>
+                    <div class="ordertitle">订单 1714594728609482</div>
+                    <div class="success-text">预订成功</div>
+                </dt>
+                <dd>
+                    <a class="ordercontent" onclick="goOrder()">
+                        <div>深圳校区室内排球场</div>
+                        <div>预订日期:2024-04-25</div>
+                        <div>下单日期:2024-04-25 13:03:35</div>
+                    </a>
+                </dd>
+                <dt>
+                    <div class="orderagain">再来一单</div>
+                    <div class="orderinfo">金额:
+                        <span class="moneysign">¥3</span>
+                        &nbsp;数量: 1
+                    </div>
+                </dt>
+            </dl>
+        </div>
+    </section>
+    <script>
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return decodeURIComponent(r[2]); return null;
+        }
+        var sname = GetQueryString("name");
+        var id = GetQueryString("id");
+        var place = GetQueryString("place");
+        var time = GetQueryString("time");
+        document.getElementById("username").textContent = sname;
+        document.getElementById("bookplace").textContent = place;
+        function goHome(){
+            window.location.href = './home.html?name=' + encodeURIComponent(sname)
+                                            + '&id=' + encodeURIComponent(id)
+                                            + '&place=' + encodeURIComponent(place)
+                                            + '&time=' + encodeURIComponent(time);
+        };
+        function goOrder() {
+            window.location.href = './order.html?name=' + encodeURIComponent(sname)
+                                            + '&id=' + encodeURIComponent(id)
+                                            + '&place=' + encodeURIComponent(place)
+                                            + '&time=' + encodeURIComponent(time);
+        };
+    </script>
+</body>
+
+</html>

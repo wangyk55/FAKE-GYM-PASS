@@ -1,0 +1,1313 @@
+<!DOCTYPE html>
+<html lang="cn">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no">
+    <title>查看订单</title>
+    <link rel="stylesheet" href="./simplelineicons/css/simple-line-icons.css">
+    <style>
+        textarea {
+            font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif
+        }
+
+        body,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        textarea {
+            font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif
+        }
+
+        a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        h3 {
+            font-weight: 400;
+        }
+
+        section {
+            display: flex;
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #005828;
+            color: #fff;
+            font-size: 1.125rem;
+            padding-top: 12px;
+            padding-bottom: 12px;
+            padding-left: 18px;
+            padding-right: 18px;
+        }
+
+        section.order-base-info {
+            flex-direction: column;
+            background-color: #fff;
+            position: relative;
+        }
+
+        section.order-base-info h3 {
+            color: #333;
+            font-size: 1.125rem;
+            margin: 0;
+            padding: 1rem 1rem 0 4rem
+        }
+
+        .order-status {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: .3rem 1rem .3rem 4rem;
+            margin: 0;
+        }
+
+        .order-status div {
+            font-size: .85rem;
+            margin: 0;
+        }
+
+        .status-line {
+            background-color: #e6e6e6;
+            height: 3.75rem;
+            width: 2px;
+            position: absolute;
+            left: 1.5rem;
+            top: 0
+        }
+
+        .status-icon {
+            color: #008830;
+            position: absolute;
+            left: .65rem;
+            top: 3.9rem;
+        }
+
+        .icon-checkbox {
+            background-color: #005826;
+            border: 1px solid #005826;
+            border-radius: 1.75rem;
+            width: 1.75rem;
+            height: 1.75rem;
+            position: relative;
+            transform: rotate(45deg);
+        }
+
+        .icon-checkbox:after,
+        .icon-checkbox:before {
+            content: '';
+            background-color: #fff;
+            font-size: 0;
+            position: absolute;
+            overflow: hidden
+        }
+
+        .icon-checkbox:before {
+            height: 2px;
+            width: 8px;
+            left: 8px;
+            top: 19px
+        }
+
+        .icon-checkbox:after {
+            height: 15px;
+            width: 2px;
+            left: 15px;
+            top: 6px
+        }
+
+        .icon-arrow-right {
+            font-style: normal;
+            font-weight: 400;
+            font-variant: normal;
+            line-height: 1;
+            display: inline-block;
+        }
+
+        .order-again-button {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-top: 1px solid #e6e6e6;
+            border-bottom: 1px solid #e6e6e6;
+            line-height: 3rem;
+            margin-top: 1rem;
+            color: #008830;
+        }
+
+        .order-detail {
+            flex-direction: column;
+        }
+
+        .order-detail h3 {
+            color: #9d9a9a;
+            font-size: 1rem;
+            padding: .6rem .75rem;
+            margin: 0;
+        }
+
+        .order-detail div {
+            background-color: #ffffff;
+        }
+
+        .order-detail div>div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .other-info {
+            flex-direction: column;
+        }
+
+        .other-info h3 {
+            color: #9d9a9a;
+            font-size: 1rem;
+            padding: .6rem .75rem;
+            margin: 0;
+        }
+
+        dl {
+            display: -webkit-box;
+            border-bottom: 0;
+            padding-bottom: 0;
+            background-color: #fff;
+            padding: .625rem 0 0 0;
+            margin: 0;
+        }
+
+        dl dt {
+            color: grey;
+            padding-right: .75rem;
+            font-size: .85rem;
+            margin: 0;
+            padding-left: 1rem;
+            width: 3.75rem;
+        }
+
+        dl dd {
+            color: #555;
+            font-size: .85rem;
+            margin: 0;
+            padding-left: .75rem;
+        }
+
+        #qr-code .close {
+            width: 1.5rem;
+            height: 1.5rem;
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            transform: rotate(45deg);
+        }
+
+        #qr-code .close:after,
+        #qr-code .close:before {
+            background-color: grey;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            content: ''
+        }
+
+        #qr-code .close:before {
+            height: 1.5rem;
+            width: 2px;
+            margin: -.75em 0 0 -1px
+        }
+
+        #qr-code .close:after {
+            width: 1.5rem;
+            height: 2px;
+            margin: -1px 0 0 -.75rem
+        }
+
+        #qr-code .titletext {
+            padding-top: 4rem;
+            text-align: center;
+        }
+
+        #qr-code .code-number {
+            font-size: 30px;
+            font-weight: 400;
+            margin: 0;
+            color: #333;
+            text-align: center;
+        }
+
+        #qr-code .code-img {
+            margin-block-start: 1em;
+            margin-block-end: 1em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+        }
+
+        #qr-code .code-img>table{
+            width: 200px;
+            height: 200px;
+            border: 0px;
+            border-collapse: collapse;
+            background-color: rgb(255, 255, 255);
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        #qr-code .test-info {
+            font-weight: 600;
+            color: #333;
+            text-align: center;
+            display: block;
+            margin-block-start: 1.33em;
+            margin-block-end: 1.33em;
+            margin-inline-start: 0px;
+            margin-inline-end: 0px;
+        }
+    </style>
+</head>
+
+<body style="margin: 0; background-color: #f6f6f6;">
+    <div id="order-page">
+        <div class="toolbar">
+            <a class="icon-arrow-left" onclick="goUser()"></a>
+            <div>查看订单</div>
+            <a class="icon-home" onclick="goHome()"></a>
+        </div>
+        <section class="order-base-info">
+            <div class="status-line"></div>
+            <div class="status-icon">
+                <div class="icon-checkbox"></div>
+            </div>
+            <h3>订单1714994323418414</h3>
+            <h3>地点：中大体育部</h3>
+            <div class="order-status">
+                <div style="color: #EB5A5A;">完成</div>
+                <div style="color: #999999;">2024-05-25 12:00:28</div>
+            </div>
+            <div class="order-status" style="justify-content: flex-end; padding-bottom: 1rem;">
+                <div style="color: #EB5A5A;">
+                    更多状态<em class="icon-arrow-right" style="font-size: .75rem;"></em>
+                </div>
+            </div>
+            <div class="order-again-button">
+                再来一单
+            </div>
+        </section>
+        <section class="order-detail">
+            <h3>订单明细</h3>
+            <div style="margin-top: 0; padding: 1rem;">
+                <div style="padding-bottom: 1rem; border-bottom: 1px dashed #d9d9d9;">
+                    <div name="bookplace">???</div>
+                    <div name="booktime">2024-05-25&nbsp;&nbsp;19:01-20:00 &nbsp;&nbsp;</div>
+                </div>
+                <div style="padding: 0; padding-top: .625rem; justify-content: flex-end;">
+                    <span style="color: grey; padding-right: .75rem; font-size: .85rem; margin: 0;">订单金额</span>
+                    <span style="color: #EB5A5A; font-size: .85rem;">
+                        <big>￥3.00</big>
+                    </span>
+                </div>
+            </div>
+            <div style="margin-bottom: 2.5rem; padding: .625rem 0; padding-left: .75rem;">
+                <div onclick="show()">
+                    <div style="font-size: .85rem; color: #555; ">验证码 4704132314092608</div>
+                    <div>
+                        <img src="qr_thumb.jpg" height="28"
+                            style="position: relative; margin-top: -6px; padding-right: .75rem;">
+                        <div class="icon-arrow-right"
+                            style="color: grey; font-size: .85rem; padding-right: .75rem; padding-left: .3125rem;"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="other-info">
+            <h3>其他信息</h3>
+            <div class="other-info-table">
+                <dl>
+                    <dt>下单人</dt>
+                    <dd id="sname">???</dd>
+                </dl>
+                <dl>
+                    <dt>学号</dt>
+                    <dd id="id">???</dd>
+                </dl>
+                <dl>
+                    <dt>商户联系方式</dt>
+                    <dd></dd>
+                </dl>
+                <dl style=" padding-bottom: 1rem;">
+                    <dt>支付方式</dt>
+                    <dd>
+                        <img src="gym-pay-logo.png">
+                    </dd>
+                </dl>
+            </div>
+        </section>
+    </div>
+    <div id="qr-code" hidden="hidden" style="background-color: #fff; height: 100vh;">
+        <span class="close" onclick="hide()"></span>
+        <div class="titletext">验证码：</div>
+        <h4 class="code-number"">4704132314092608</h4>
+        <div class="code-img">
+            <table>
+                <tbody>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                    </tr>
+                    <tr style="height: 6.89655px;">
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(0, 0, 0);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                        <td style="width: 6.89655px; background-color: rgb(255, 255, 255);"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="test-info" name="bookplace">???</div>
+        <div class="test-info" name="booktime">预定日期:2024-05-25&nbsp;&nbsp;19:01-20:00</div>
+        </div>
+    </div>
+    <script>
+        function show(){
+            var order = document.getElementById('order-page');
+            var qrcode = document.getElementById('qr-code');
+            order.hidden=true;
+            qrcode.hidden=false;
+        }
+        function hide(){
+            var order = document.getElementById('order-page');
+            var qrcode = document.getElementById('qr-code');
+            order.hidden=false;
+            qrcode.hidden=true;
+        }
+        function GetQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return decodeURIComponent(r[2]); return null;
+        }
+        var sname = GetQueryString("name");
+        var id = GetQueryString("id");
+        var place = GetQueryString("place");
+        var time = GetQueryString("time");
+        document.getElementById("sname").textContent = sname;
+        document.getElementById("id").textContent = id;
+        var bps = document.getElementsByName("bookplace");
+        bps.forEach(element => {
+            element.textContent = place;
+        });
+        var bts = document.getElementsByName("booktime");
+        bts[0].innerHTML = time;
+        bts[1].innerHTML = "预定日期:"+time;
+        
+
+        function goHome(){
+            window.location.href = './home.html?name=' + encodeURIComponent(sname)
+                                            + '&id=' + encodeURIComponent(id)
+                                            + '&place=' + encodeURIComponent(place)
+                                            + '&time=' + encodeURIComponent(time);
+        };
+        function goUser() {
+            window.location.href = './user.html?name=' + encodeURIComponent(sname)
+                                            + '&id=' + encodeURIComponent(id)
+                                            + '&place=' + encodeURIComponent(place)
+                                            + '&time=' + encodeURIComponent(time);
+        };
+    </script>
+</body>
+
+</html>
