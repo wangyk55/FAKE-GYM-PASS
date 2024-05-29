@@ -193,14 +193,14 @@
                 <dd>
                     <a class="ordercontent" onclick="goOrder()">
                         <div id="bookplace">???</div>
-                        <div>预订日期:2024-05-25</div>
-                        <div>下单日期:2020-05-25 12:00:23</div>
+                        <div id="booktime">预订日期:2024-05-25</div>
+                        <div id="ordertime">下单日期:2024-05-25 12:00:23</div>
                     </a>
                 </dd>
                 <dt>
                     <div class="orderagain">再来一单</div>
                     <div class="orderinfo">金额:
-                        <span class="moneysign" id="money">¥3</span>
+                        <span class="moneysign" id="money">¥???</span>
                         &nbsp;数量: 1
                     </div>
                 </dt>
@@ -213,8 +213,8 @@
                 <dd>
                     <a class="ordercontent" onclick="goOrder()">
                         <div>深圳校区室内排球场</div>
-                        <div>预订日期:2024-05-21</div>
-                        <div>下单日期:2024-05-21 15:17:32</div>
+                        <div class="history-book-date">预订日期:2024-05-21</div>
+                        <div class="history-order-date">下单日期:2024-05-21 15:17:32</div>
                     </a>
                 </dd>
                 <dt>
@@ -233,8 +233,8 @@
                 <dd>
                     <a class="ordercontent" onclick="goOrder()">
                         <div>健身房测试</div>
-                        <div>预订日期:2024-05-20</div>
-                        <div>下单日期:2020-05-20 19:45:13</div>
+                        <div class="history-book-date">预订日期:2024-05-20</div>
+                        <div class="history-order-date">下单日期:2024-05-20 19:45:13</div>
                     </a>
                 </dd>
                 <dt>
@@ -253,8 +253,8 @@
                 <dd>
                     <a class="ordercontent" onclick="goOrder()">
                         <div>深圳校区室内排球场</div>
-                        <div>预订日期:2024-05-12</div>
-                        <div>下单日期:2020-05-12 20:34:27</div>
+                        <div class="history-book-date">预订日期:2024-05-12</div>
+                        <div class="history-order-date">下单日期:2024-05-12 20:34:27</div>
                     </a>
                 </dd>
                 <dt>
@@ -273,8 +273,8 @@
                 <dd>
                     <a class="ordercontent" onclick="goOrder()">
                         <div>健身房测试</div>
-                        <div>预订日期:2024-05-08</div>
-                        <div>下单日期:2024-05-08 14:56:53</div>
+                        <div class="history-book-date">预订日期:2024-05-08</div>
+                        <div class="history-order-date">下单日期:2024-05-08 14:56:53</div>
                     </a>
                 </dd>
                 <dt>
@@ -293,8 +293,8 @@
                 <dd>
                     <a class="ordercontent" onclick="goOrder()">
                         <div>深圳校区室内排球场</div>
-                        <div>预订日期:2020-05-03</div>
-                        <div>下单日期:2020-05-03 19:36:15</div>
+                        <div class="history-book-date">预订日期:2024-05-03</div>
+                        <div class="history-order-date">下单日期:2024-05-03 19:36:15</div>
                     </a>
                 </dd>
                 <dt>
@@ -313,8 +313,8 @@
                 <dd>
                     <a class="ordercontent" onclick="goOrder()">
                         <div>深圳校区室内排球场</div>
-                        <div>预订日期:2024-05-01</div>
-                        <div>下单日期:2024-05-01 12:43:15</div>
+                        <div class="history-book-date">预订日期:2024-05-01</div>
+                        <div class="history-order-date">下单日期:2024-05-01 12:43:15</div>
                     </a>
                 </dd>
                 <dt>
@@ -333,8 +333,8 @@
                 <dd>
                     <a class="ordercontent" onclick="goOrder()">
                         <div>深圳校区室内排球场</div>
-                        <div>预订日期:2024-04-28</div>
-                        <div>下单日期:2024-04-28 17:04:46</div>
+                        <div class="history-book-date">预订日期:2024-04-28</div>
+                        <div class="history-order-date">下单日期:2024-04-28 17:04:46</div>
                     </a>
                 </dd>
                 <dt>
@@ -353,8 +353,8 @@
                 <dd>
                     <a class="ordercontent" onclick="goOrder()">
                         <div>深圳校区室内排球场</div>
-                        <div>预订日期:2024-04-25</div>
-                        <div>下单日期:2024-04-25 13:03:35</div>
+                        <div class="history-book-date">预订日期:2024-04-25</div>
+                        <div class="history-order-date">下单日期:2024-04-25 13:03:35</div>
                     </a>
                 </dd>
                 <dt>
@@ -380,7 +380,22 @@
         var time = GetQueryString("time");
         document.getElementById("username").textContent = sname;
         document.getElementById("bookplace").textContent = place;
+        time_date = time.split("&nbsp;&nbsp;")[0];
+        document.getElementById("booktime").textContent = "预订日期:" + time_date;
+        document.getElementById("ordertime").textContent = "下单日期:" + time_date + " 13:43:09";
         document.getElementById("money").textContent = "¥" + money;
+
+        var date_book = new Date(time_date);
+        var date_instance = new Date(time_date);
+        var date_diff = [-4, -5, -13, -17, -22, -24, -27, -30];
+        var hisbd = document.getElementsByClassName("history-book-date");
+        var hisod = document.getElementsByClassName("history-order-date");
+        for (var i = 0; i < 8; i++) {
+            date_instance.setDate(date_book.getDate() + date_diff[i]);
+            hisbd[i].textContent = "预订日期:" + date_instance.toISOString().slice(0, 10);
+            hisod_time = hisod[i].textContent.split(" ")[1];
+            hisod[i].textContent = "下单日期:" + date_instance.toISOString().slice(0, 10) + " " + hisod_time;
+        }
         function goHome(){
             window.location.href = './home.html?name=' + encodeURIComponent(sname)
                                             + '&id=' + encodeURIComponent(id)

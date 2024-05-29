@@ -133,14 +133,15 @@
                         dl2.id = "timedl2";
                         var mnt2 = ["00", "30"];
                         if (start.split(":")[1] == "31") {
-                            var opt = document.createElement("option");
-                            opt.textContent = String(t2+1).padStart(2, '0')+":"+mnt2[0];
-                        } else {
-                            var opt = document.createElement("option");
-                            opt.textContent = String(t2).padStart(2, '0')+":"+mnt2[1];
                             t2++;
+                            var opt_first = document.createElement("option");
+                            opt_first.textContent = String(t2).padStart(2, '0')+":"+mnt2[0];
+                            dl2.appendChild(opt_first);
                         }
+                        var opt = document.createElement("option");
+                        opt.textContent = String(t2).padStart(2, '0')+":"+mnt2[1];
                         dl2.appendChild(opt);
+                        t2++;
                         for (t2;t2<25;t2++) {
                             var opt1 = document.createElement("option");
                             var opt2 = document.createElement("option");
@@ -206,7 +207,8 @@
             document.getElementById("date").value = t[0];
             var t1 = t[1].split("-");
             document.getElementById("time1").value = t1[0];
-            document.getElementById("time2").value = t1[1];
+            changeTime2();
+            document.getElementById("time2").value = t1[1].trim();
         }
         function enter() {
             var sname = document.getElementById("sname").value;

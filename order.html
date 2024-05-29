@@ -288,7 +288,7 @@
             <h3>地点：中大体育部</h3>
             <div class="order-status">
                 <div style="color: #EB5A5A;">完成</div>
-                <div style="color: #999999;">2024-05-25 12:00:28</div>
+                <div style="color: #999999;" id="ordertime">2024-05-25 12:00:28</div>
             </div>
             <div class="order-status" style="justify-content: flex-end; padding-bottom: 1rem;">
                 <div style="color: #EB5A5A;">
@@ -1293,9 +1293,10 @@
         });
         var bts = document.getElementsByName("booktime");
         bts[0].innerHTML = time;
-        bts[1].innerHTML = "预定日期:"+time;
+        bts[1].innerHTML = "预定日期:" + time.trim();
+        time_date = time.split("&nbsp;&nbsp;");
+        document.getElementById("ordertime").textContent = time_date[0] + " 13:43:09";
         document.getElementById("money").textContent = "￥" + money + ".00";
-        
 
         function goHome(){
             window.location.href = './home.html?name=' + encodeURIComponent(sname)
