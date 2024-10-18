@@ -348,6 +348,7 @@
             var r = window.location.search.substr(1).match(reg);
             if (r != null) return decodeURIComponent(r[2]); return null;
         }
+        var order = GetQueryString("order");
         var sname = GetQueryString("name");
         var id = GetQueryString("id");
         var place = GetQueryString("place");
@@ -355,14 +356,16 @@
         var time = GetQueryString("time");
         document.getElementById("welcometext").textContent = "欢迎，" + sname;
         function goNext() {
-            window.location.href = './user.html?name=' + encodeURIComponent(sname)
+            window.location.href = './user.html?order=' + encodeURIComponent(order)
+                                            + '&name=' + encodeURIComponent(sname)
                                             + '&id=' + encodeURIComponent(id)
                                             + '&place=' + encodeURIComponent(place)
                                             + '&money=' + encodeURIComponent(money)
                                             + '&time=' + encodeURIComponent(time);
         }
         function goIndex() {
-            window.location.href = './index.html?name=' + encodeURIComponent(sname)
+            window.location.href = './index.html?order=' + encodeURIComponent(order)
+                                            + '&name=' + encodeURIComponent(sname)
                                             + '&id=' + encodeURIComponent(id)
                                             + '&place=' + encodeURIComponent(place)
                                             + '&money=' + encodeURIComponent(money)

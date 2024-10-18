@@ -187,7 +187,7 @@
         <div class="scrollbar">
             <dl>
                 <dt>
-                    <div class="ordertitle">订单 1714994323418414</div>
+                    <div class="ordertitle" id="ordertitle">???</div>
                     <div class="success-text">预订成功</div>
                 </dt>
                 <dd>
@@ -373,11 +373,13 @@
             var r = window.location.search.substr(1).match(reg);
             if (r != null) return decodeURIComponent(r[2]); return null;
         }
+        var order = GetQueryString("order");
         var sname = GetQueryString("name");
         var id = GetQueryString("id");
         var place = GetQueryString("place");
         var money = GetQueryString("money");
         var time = GetQueryString("time");
+        document.getElementById("ordertitle").textContent = "订单 " + order;
         document.getElementById("username").textContent = sname;
         document.getElementById("bookplace").textContent = place;
         time_date = time.split("&nbsp;&nbsp;")[0];

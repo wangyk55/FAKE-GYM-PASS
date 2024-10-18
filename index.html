@@ -60,6 +60,41 @@
             right: .5em;
             top: 0;
         }
+        #popup-warning {
+            position: fixed;
+            z-index: 2;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.5);
+            /* display: none; */
+        }
+        #popup-warning-content {
+            position: fixed;
+            z-index: 2;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 500px;
+            background-color: #f1f1f1;
+            padding: 2em;
+            border-radius: 1em;
+        }
+        #warning-title {
+            margin: 0;
+            font-size: 4em;
+            color: red;
+            font-style: bold;
+        }
+        #warning-text {
+            font-size: 2em;
+            color: red;
+            /* padding: 1em; */
+            margin: 1em;
+        }
     </style>
 </head>
 
@@ -68,99 +103,107 @@
         <h1>FAKE GYM PASS</h1>
     </div>
     <section class="flex-container">
-        <table style="text-align: left;">
-            <tr>
-                <th>姓名</th>
-                <td>
-                    <input id="sname" style="width: 10rem;">
-                </td>
-            </tr>
-            <tr>
-                <th>学号</th>
-                <td>
-                    <input id="studentid" style="width: 10rem;">
-                </td>
-            </tr>
-            <tr>
-                <th>预约场馆</th>
-                <td>
-                    <input id="place" style="width: 10rem;">
-                </td>
-            </tr>
-            <tr>
-                <th>预约金额</th>
-                <td>
-                    <input id="money" style="width: 10rem;">
-                </td>
-            </tr>
-            <tr>
-                <th>预约时段</th>
-                <td>
-                    <input type="date" id="date" style="width: 10rem;">
-                </td>
-            </tr>
-            <tr>
-                <th></th>
-                <td id="book-time-input" class="flex-container" style="justify-content: space-between;">
-                    <input type="time" id="time1" list="timedl1" onchange="changeTime2()">
-                    -
-                    <input type="time" id="time2" list="timedl2">
-                </td>
-                <script>
-                    var dl1 = document.createElement("datalist");
-                    var mnt1 = ["01", "31"];
-                    p = document.getElementById("book-time-input");
-                    dl1.id = "timedl1";
-                    for (var t1=0;t1<25;t1++) {
-                        var opt1 = document.createElement("option");
-                        var opt2 = document.createElement("option");
-                        opt1.textContent = String(t1).padStart(2, '0')+":"+mnt1[0];
-                        opt2.textContent = String(t1).padStart(2, '0')+":"+mnt1[1];
-                        dl1.appendChild(opt1);
-                        dl1.appendChild(opt2);
-                    }
-                    p.appendChild(dl1);
-                    function changeTime2(){
-                        var time2 = document.getElementById("time2");
-                        time2.value = "";
-                        var start = document.getElementById("time1").value;
-                        var t2 = parseInt(start.split(":")[0]);
-                        var olddl2 = document.getElementById("timedl2");
-                        if (olddl2) {
-                            olddl2.remove();
-                        }
-                        var dl2 = document.createElement("datalist");
-                        dl2.id = "timedl2";
-                        var mnt2 = ["00", "30"];
-                        if (start.split(":")[1] == "31") {
-                            t2++;
-                            var opt_first = document.createElement("option");
-                            opt_first.textContent = String(t2).padStart(2, '0')+":"+mnt2[0];
-                            dl2.appendChild(opt_first);
-                        }
-                        var opt = document.createElement("option");
-                        opt.textContent = String(t2).padStart(2, '0')+":"+mnt2[1];
-                        dl2.appendChild(opt);
-                        t2++;
-                        for (t2;t2<25;t2++) {
+        <form action="./home.html" method="get">
+            <table style="text-align: left;">
+                <tr>
+                    <th>订单号码</th>
+                    <td>
+                        <input id="order" name="order" style="width: 10rem;" pattern="\d{16}" title="请输入16位订单号" required>
+                    </td>
+                </tr>
+                <tr>
+                    <th>姓名</th>
+                    <td>
+                        <input id="sname" name="name" style="width: 10rem;">
+                    </td>
+                </tr>
+                <tr>
+                    <th>学号</th>
+                    <td>
+                        <input id="studentid" name="id" style="width: 10rem;">
+                    </td>
+                </tr>
+                <tr>
+                    <th>预约场馆</th>
+                    <td>
+                        <input id="place" name="place" style="width: 10rem;">
+                    </td>
+                </tr>
+                <tr>
+                    <th>预约金额</th>
+                    <td>
+                        <input id="money" name="money" style="width: 10rem;">
+                    </td>
+                </tr>
+                <tr>
+                    <th>预约时段</th>
+                    <td>
+                        <input type="date" name="date" id="date" style="width: 10rem;">
+                    </td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td id="book-time-input" class="flex-container" style="justify-content: space-between;">
+                        <input type="time" id="time1" name="time1" list="timedl1" onchange="changeTime2()">
+                        -
+                        <input type="time" id="time2" name="time2" list="timedl2">
+                    </td>
+                    <script>
+                        var dl1 = document.createElement("datalist");
+                        var mnt1 = ["01", "31"];
+                        p = document.getElementById("book-time-input");
+                        dl1.id = "timedl1";
+                        for (var t1=0;t1<25;t1++) {
                             var opt1 = document.createElement("option");
                             var opt2 = document.createElement("option");
-                            opt1.textContent = String(t2).padStart(2, '0')+":"+mnt2[0];
-                            opt2.textContent = String(t2).padStart(2, '0')+":"+mnt2[1];
-                            dl2.appendChild(opt1);
-                            dl2.appendChild(opt2);
-                            p.appendChild(dl2);
+                            opt1.textContent = String(t1).padStart(2, '0')+":"+mnt1[0];
+                            opt2.textContent = String(t1).padStart(2, '0')+":"+mnt1[1];
+                            dl1.appendChild(opt1);
+                            dl1.appendChild(opt2);
                         }
-                    };
-                </script>
-            </tr>
-            <tr>
-                <th></th>
-                <td class="flex-container">
-                    <button onclick="enter()">Go!</button>
-                </td>
-            </tr>
-        </table>
+                        p.appendChild(dl1);
+                        function changeTime2(){
+                            var time2 = document.getElementById("time2");
+                            time2.value = "";
+                            var start = document.getElementById("time1").value;
+                            var t2 = parseInt(start.split(":")[0]);
+                            var olddl2 = document.getElementById("timedl2");
+                            if (olddl2) {
+                                olddl2.remove();
+                            }
+                            var dl2 = document.createElement("datalist");
+                            dl2.id = "timedl2";
+                            var mnt2 = ["00", "30"];
+                            if (start.split(":")[1] == "31") {
+                                t2++;
+                                var opt_first = document.createElement("option");
+                                opt_first.textContent = String(t2).padStart(2, '0')+":"+mnt2[0];
+                                dl2.appendChild(opt_first);
+                            }
+                            var opt = document.createElement("option");
+                            opt.textContent = String(t2).padStart(2, '0')+":"+mnt2[1];
+                            dl2.appendChild(opt);
+                            t2++;
+                            for (t2;t2<25;t2++) {
+                                var opt1 = document.createElement("option");
+                                var opt2 = document.createElement("option");
+                                opt1.textContent = String(t2).padStart(2, '0')+":"+mnt2[0];
+                                opt2.textContent = String(t2).padStart(2, '0')+":"+mnt2[1];
+                                dl2.appendChild(opt1);
+                                dl2.appendChild(opt2);
+                                p.appendChild(dl2);
+                            }
+                        };
+                    </script>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td class="flex-container">
+                        <button>Go!</button>
+                    </td>
+                </tr>
+            </table>
+        </form>
     </section>
     <footer>
         <span>© 2024 MAJ</span>
@@ -179,7 +222,18 @@
             </div>
         </div>
     </div>
+    <div id="popup-warning">
+        <div id="popup-warning-content">
+            <span class="close" onclick="closePopupWarning()">&times;</span>
+            <h4 id="warning-title">警告</h4>
+            <p id="warning-text">近期发现体育馆开始验证订单号码和二维码的正确性，请谨慎使用本项目。</p>
+            <p id="warning-text">订单号码已改为强制需要手动输入，二维码与验证码绑定，为学校服务器后端生成，无法伪造，所以二维码不能被验证，请知悉。</p>
+        </div>
+    </div>
     <script>
+        function closePopupWarning() {
+            document.getElementById("popup-warning").hidden = true;
+        }
         function GetQueryString(name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
             var r = window.location.search.substr(1).match(reg);
@@ -211,6 +265,7 @@
             document.getElementById("time2").value = t1[1].trim();
         }
         function enter() {
+            var order = document.getElementById("order").value;
             var sname = document.getElementById("sname").value;
             var id = document.getElementById("studentid").value;
             var place = document.getElementById("place").value;
@@ -219,7 +274,8 @@
             var time1 = document.getElementById("time1").value;
             var time2 = document.getElementById("time2").value;
             var time = date+"&nbsp;&nbsp;"+time1+"-"+time2+" &nbsp;&nbsp;";
-            window.location.href = './home.html?name=' + encodeURIComponent(sname)
+            window.location.href = './home.html?order=' + encodeURIComponent(order)
+                                            + '&name=' + encodeURIComponent(sname)
                                             + '&id=' + encodeURIComponent(id)
                                             + '&place=' + encodeURIComponent(place)
                                             + '&money=' + encodeURIComponent(money)

@@ -284,7 +284,7 @@
             <div class="status-icon">
                 <div class="icon-checkbox"></div>
             </div>
-            <h3>订单1714994323418414</h3>
+            <h3 id="ordertitle">???</h3>
             <h3>地点：中大体育部</h3>
             <div class="order-status">
                 <div style="color: #EB5A5A;">完成</div>
@@ -1280,11 +1280,13 @@
             var r = window.location.search.substr(1).match(reg);
             if (r != null) return decodeURIComponent(r[2]); return null;
         }
+        var order = GetQueryString("order");
         var sname = GetQueryString("name");
         var id = GetQueryString("id");
         var place = GetQueryString("place");
         var money = GetQueryString("money");
         var time = GetQueryString("time");
+        document.getElementById("order").textContent = "订单" + order;
         document.getElementById("sname").textContent = sname;
         document.getElementById("id").textContent = id;
         var bps = document.getElementsByName("bookplace");
