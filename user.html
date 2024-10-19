@@ -382,7 +382,7 @@
         document.getElementById("ordertitle").textContent = "订单 " + order;
         document.getElementById("username").textContent = sname;
         document.getElementById("bookplace").textContent = place;
-        time_date = time.split("&nbsp;&nbsp;")[0];
+        var time_date = time.split("&nbsp;&nbsp;")[0];
         document.getElementById("booktime").textContent = "预订日期:" + time_date;
         document.getElementById("ordertime").textContent = "下单日期:" + time_date + " 13:43:09";
         document.getElementById("money").textContent = "¥" + money;

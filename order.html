@@ -1297,7 +1297,7 @@
         var bts = document.getElementsByName("booktime");
         bts[0].innerHTML = time;
         bts[1].innerHTML = "预定日期:" + time.trim();
-        time_date = time.split("&nbsp;&nbsp;");
+        var time_date = time.split("&nbsp;&nbsp;");
         document.getElementById("ordertime").textContent = time_date[0] + " 13:43:09";
         document.getElementById("money").textContent = "￥" + money + ".00";
 
