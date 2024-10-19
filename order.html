@@ -303,7 +303,7 @@
             <h3>订单明细</h3>
             <div style="margin-top: 0; padding: 1rem;">
                 <div style="padding-bottom: 1rem; border-bottom: 1px dashed #d9d9d9;">
-                    <div name="bookplace">???</div>
+                    <div name="bookplace" id="ordertitle2">???</div>
                     <div name="booktime">2024-05-25&nbsp;&nbsp;19:01-20:00 &nbsp;&nbsp;</div>
                 </div>
                 <div style="padding: 0; padding-top: .625rem; justify-content: flex-end;">
@@ -1286,7 +1286,8 @@
         var place = GetQueryString("place");
         var money = GetQueryString("money");
         var time = GetQueryString("time");
-        document.getElementById("order").textContent = "订单" + order;
+        document.getElementById("ordertitle").textContent = "订单" + order;
+        document.getElementById("ordertitle2").textContent = order;
         document.getElementById("sname").textContent = sname;
         document.getElementById("id").textContent = id;
         var bps = document.getElementsByName("bookplace");
