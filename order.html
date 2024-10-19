@@ -1301,7 +1301,8 @@
         document.getElementById("money").textContent = "￥" + money + ".00";
 
         function goHome(){
-            window.location.href = './home.html?name=' + encodeURIComponent(sname)
+            window.location.href = './home.html?order=' + encodeURIComponent(order)
+                                            + '&name=' + encodeURIComponent(sname)
                                             + '&id=' + encodeURIComponent(id)
                                             + '&place=' + encodeURIComponent(place)
                                             + '&money=' + encodeURIComponent(money)

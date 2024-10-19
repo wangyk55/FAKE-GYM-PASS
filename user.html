@@ -399,7 +399,8 @@
             hisod[i].textContent = "下单日期:" + date_instance.toISOString().slice(0, 10) + " " + hisod_time;
         }
         function goHome(){
-            window.location.href = './home.html?name=' + encodeURIComponent(sname)
+            window.location.href = './home.html?order=' + encodeURIComponent(order)
+                                            + '&name=' + encodeURIComponent(sname)
                                             + '&id=' + encodeURIComponent(id)
                                             + '&place=' + encodeURIComponent(place)
                                             + '&money=' + encodeURIComponent(money)
