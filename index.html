@@ -243,7 +243,9 @@
         var id = GetQueryString("id");
         var place = GetQueryString("place");
         var money = GetQueryString("money");
-        var time = GetQueryString("time");
+        // var time = GetQueryString("time");
+        var time1 = GetQueryString("time1");
+        var time2 = GetQueryString("time2");
         if (sname != null) {
             document.getElementById("sname").value = sname;
         }
@@ -256,31 +258,36 @@
         if (money != null) {
             document.getElementById("money").value = money;
         }
-        if (time != null) {
-            var t = time.split("&nbsp;&nbsp;");
-            document.getElementById("date").value = t[0];
-            var t1 = t[1].split("-");
-            document.getElementById("time1").value = t1[0];
+        // if (time != null) {
+        //     var t = time.split("&nbsp;&nbsp;");
+        //     document.getElementById("date").value = t[0];
+        //     var t1 = t[1].split("-");
+        //     document.getElementById("time1").value = t1[0];
+        //     changeTime2();
+        //     document.getElementById("time2").value = t1[1].trim();
+        // }
+        if (time1 != null) {
+            document.getElementById("time1").value = time1;
             changeTime2();
-            document.getElementById("time2").value = t1[1].trim();
+            document.getElementById("time2").value = time2;
         }
-        function enter() {
-            var order = document.getElementById("order").value;
-            var sname = document.getElementById("sname").value;
-            var id = document.getElementById("studentid").value;
-            var place = document.getElementById("place").value;
-            var money = document.getElementById("money").value;
-            var date = document.getElementById("date").value;
-            var time1 = document.getElementById("time1").value;
-            var time2 = document.getElementById("time2").value;
-            var time = date+"&nbsp;&nbsp;"+time1+"-"+time2+" &nbsp;&nbsp;";
-            window.location.href = './home.html?order=' + encodeURIComponent(order)
-                                            + '&name=' + encodeURIComponent(sname)
-                                            + '&id=' + encodeURIComponent(id)
-                                            + '&place=' + encodeURIComponent(place)
-                                            + '&money=' + encodeURIComponent(money)
-                                            + '&time=' + encodeURIComponent(time);
-        }
+        // function enter() {
+        //     var order = document.getElementById("order").value;
+        //     var sname = document.getElementById("sname").value;
+        //     var id = document.getElementById("studentid").value;
+        //     var place = document.getElementById("place").value;
+        //     var money = document.getElementById("money").value;
+        //     var date = document.getElementById("date").value;
+        //     var time1 = document.getElementById("time1").value;
+        //     var time2 = document.getElementById("time2").value;
+        //     var time = date+"&nbsp;&nbsp;"+time1+"-"+time2+" &nbsp;&nbsp;";
+        //     window.location.href = './home.html?order=' + encodeURIComponent(order)
+        //                                     + '&name=' + encodeURIComponent(sname)
+        //                                     + '&id=' + encodeURIComponent(id)
+        //                                     + '&place=' + encodeURIComponent(place)
+        //                                     + '&money=' + encodeURIComponent(money)
+        //                                     + '&time=' + encodeURIComponent(time);
+        // }
 
         function openFloatWindow() {
             document.getElementById("floatWindowContainer").hidden = false;

@@ -353,7 +353,10 @@
         var id = GetQueryString("id");
         var place = GetQueryString("place");
         var money = GetQueryString("money");
-        var time = GetQueryString("time");
+        // var time = GetQueryString("time");
+        var date = GetQueryString("date");
+        var time1 = GetQueryString("time1");
+        var time2 = GetQueryString("time2");
         document.getElementById("welcometext").textContent = "欢迎，" + sname;
         function goNext() {
             window.location.href = './user.html?order=' + encodeURIComponent(order)
@@ -361,7 +364,9 @@
                                             + '&id=' + encodeURIComponent(id)
                                             + '&place=' + encodeURIComponent(place)
                                             + '&money=' + encodeURIComponent(money)
-                                            + '&time=' + encodeURIComponent(time);
+                                            + '&date=' + encodeURIComponent(date)
+                                            + '&time1=' + encodeURIComponent(time1)
+                                            + '&time2=' + encodeURIComponent(time2);
         }
         function goIndex() {
             window.location.href = './index.html?order=' + encodeURIComponent(order)
@@ -369,7 +374,9 @@
                                             + '&id=' + encodeURIComponent(id)
                                             + '&place=' + encodeURIComponent(place)
                                             + '&money=' + encodeURIComponent(money)
-                                            + '&time=' + encodeURIComponent(time);
+                                            + '&date=' + encodeURIComponent(date)
+                                            + '&time1=' + encodeURIComponent(time1)
+                                            + '&time2=' + encodeURIComponent(time2)
         }
     </script>
 </body>

@@ -378,17 +378,22 @@
         var id = GetQueryString("id");
         var place = GetQueryString("place");
         var money = GetQueryString("money");
-        var time = GetQueryString("time");
+        // var time = GetQueryString("time");
+        var date = GetQueryString("date");
+        var time1 = GetQueryString("time1");
+        var time2 = GetQueryString("time2");
         document.getElementById("ordertitle").textContent = "订单 " + order;
         document.getElementById("username").textContent = sname;
         document.getElementById("bookplace").textContent = place;
-        var time_date = time.split("&nbsp;&nbsp;")[0];
-        document.getElementById("booktime").textContent = "预订日期:" + time_date;
-        document.getElementById("ordertime").textContent = "下单日期:" + time_date + " 13:43:09";
+        // var time_date = time.split("&nbsp;&nbsp;")[0];
+        // document.getElementById("booktime").textContent = "预订日期:" + time_date;
+        document.getElementById("booktime").textContent = "预订日期:" + date;
+        // document.getElementById("ordertime").textContent = "下单日期:" + time_date + " 13:43:09";
+        document.getElementById("ordertime").textContent = "下单日期:" + date + " 13:43:09";
         document.getElementById("money").textContent = "¥" + money;
 
-        var date_book = new Date(time_date);
-        var date_instance = new Date(time_date);
+        var date_book = new Date(date);
+        var date_instance = new Date(date);
         var date_diff = [-4, -5, -13, -17, -22, -24, -27, -30];
         var hisbd = document.getElementsByClassName("history-book-date");
         var hisod = document.getElementsByClassName("history-order-date");
@@ -404,14 +409,18 @@
                                             + '&id=' + encodeURIComponent(id)
                                             + '&place=' + encodeURIComponent(place)
                                             + '&money=' + encodeURIComponent(money)
-                                            + '&time=' + encodeURIComponent(time);
+                                            + '&date=' + encodeURIComponent(date)
+                                            + '&time1=' + encodeURIComponent(time1)
+                                            + '&time2=' + encodeURIComponent(time2);
         };
         function goOrder() {
             window.location.href = './order.html?name=' + encodeURIComponent(sname)
                                             + '&id=' + encodeURIComponent(id)
                                             + '&place=' + encodeURIComponent(place)
                                             + '&money=' + encodeURIComponent(money)
-                                            + '&time=' + encodeURIComponent(time);
+                                            + '&date=' + encodeURIComponent(date)
+                                            + '&time1=' + encodeURIComponent(time1)
+                                            + '&time2=' + encodeURIComponent(time2);
         };
     </script>
 </body>
